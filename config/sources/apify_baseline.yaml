@@ -1,0 +1,125 @@
+# Apify baseline filter — values consumed by src/collectors/apify_filter.py.
+#
+# Rule TYPES live in code (apify_filter.py); rule VALUES live here. To
+# tighten or relax the baseline, edit this file — no code change.
+#
+# Anything that fails one of these rules is sent to the rejected_orgs
+# table (with the failed-rule names attached) instead of being written
+# to raw_leads. Use scripts/search_rejections.py to inspect later, and
+# scripts/unreject.py to bring a row back into the pipeline.
+#
+# These defaults are GUESSES. Each one corresponds to an Open question in
+# docs/QUESTIONS_TO_ANSWER.md — when the operator answers, edit the value
+# here and update the question's Status.
+
+# ── Geographic baseline (Q1) ────────────────────────────────────────────────
+#
+# NATO + Ukraine + select close allies (AU, NZ, JP, KR, SG, IL, CH, IE, FI,
+# AT, SE — Sweden, Finland, Austria are already NATO as of 2024 but listed
+# explicitly because Apollo sometimes reports them under historical labels;
+# the canonical names below match Apollo's `organizationCountry` field
+# exactly). Match is case-insensitive.
+allowed_countries:
+  # NATO members
+  - "United States"
+  - "United Kingdom"
+  - "France"
+  - "Germany"
+  - "Italy"
+  - "Spain"
+  - "Netherlands"
+  - "Belgium"
+  - "Luxembourg"
+  - "Portugal"
+  - "Denmark"
+  - "Norway"
+  - "Iceland"
+  - "Greece"
+  - "Turkey"
+  - "Poland"
+  - "Czech Republic"
+  - "Czechia"
+  - "Slovakia"
+  - "Hungary"
+  - "Romania"
+  - "Bulgaria"
+  - "Slovenia"
+  - "Croatia"
+  - "Albania"
+  - "Estonia"
+  - "Latvia"
+  - "Lithuania"
+  - "Montenegro"
+  - "North Macedonia"
+  - "Canada"
+  - "Finland"
+  - "Sweden"
+  # Ukraine — explicit
+  - "Ukraine"
+  # Close allies (Five Eyes non-NATO + Indo-Pacific partners + EU neutrals
+  # Apollo treats as separate from the NATO list)
+  - "Australia"
+  - "New Zealand"
+  - "Japan"
+  - "South Korea"
+  - "Singapore"
+  - "Israel"
+  - "Switzerland"
+  - "Ireland"
+  - "Austria"
+
+# ── Stage / size (Q3) ───────────────────────────────────────────────────────
+#
+# Apollo size buckets are exact strings (with the spaces around the dash).
+# Observed buckets in the live data: "0 - 1", "2 - 10", "11 - 50",
+# "51 - 200", "201 - 500", "501 - 1000", "1001 - 5000", "5001 - 10000",
+# "10001+". "0 - 1" is excluded — almost always solo / phantom orgs.
+# Anything 501+ is excluded — beyond the fund's stage.
+allowed_sizes:
+  - "2 - 10"
+  - "11 - 50"
+  - "51 - 200"
+  - "201 - 500"
+
+# ── Stage / age (Q4) ────────────────────────────────────────────────────────
+#
+# Companies founded before 2008 are typically pre-thesis-wave (counter-drone,
+# autonomy, FPV, modern cyber-EW). Missing founded_year is allowed to pass —
+# Apollo doesn't always report it for newer orgs.
+min_founded_year: 2008
+
+# ── Industry exclusions (Q6) ────────────────────────────────────────────────
+#
+# Reject Apollo industry labels that are clearly outside the fund's thesis. The
+# list is conservative — anything ambiguous (e.g. "Software Development",
+# "Computer Vision") is allowed through and gets caught by the description
+# noise filter or by downstream classification. Match is case-insensitive
+# substring on the industry string.
+excluded_industries:
+  - "Staffing and Recruiting"
+  - "Real Estate"
+  - "Marketing and Advertising"
+  - "Marketing Services"
+  - "Advertising Services"
+  - "Public Relations"
+  - "Hospital & Health Care"
+  - "Hospitality"
+  - "Restaurants"
+  - "Retail"
+  - "Apparel & Fashion"
+
+# ── Description noise (Q6/Q7) ───────────────────────────────────────────────
+#
+# Apollo descriptions sometimes give away that the org is not what we want
+# even when industry/country/size pass. Substring fragments, matched
+# case-insensitively against `organizationDescription`. These patterns
+# extend (do not replace) the global noise patterns in
+# config/sources/excluded_companies.yaml.
+noise_description_patterns:
+  - "staffing agency"
+  - "recruiting agency"
+  - "talent acquisition firm"
+  - "marketing agency"
+  - "advertising agency"
+  - "lead generation"
+  - "real estate brokerage"

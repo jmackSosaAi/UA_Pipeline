@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ company_name }} — Investment Thesis </title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111418;
+    --surface2: #191d23;
+    --border: #222830;
+    --border-bright: #2e3740;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #39ff8a;
+    --text-primary: #e8edf2;
+    --text-secondary: #8a95a3;
+    --text-muted: #4a5568;
+    --red: #ff4757;
+    --yellow: #ffd700;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Subtle grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .doc-header {
+    border-bottom: 1px solid var(--border-bright);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+
+  .doc-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+  }
+
+  .fund-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    display: inline-block;
+  }
+
+  .doc-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .doc-title {
+    font-size: 38px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .doc-subtitle {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+  }
+
+  /* Verdict bar */
+  .verdict-bar {
+    background: var(--surface);
+    border: 1px solid var(--accent3);
+    border-left: 3px solid var(--accent3);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .verdict-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .verdict-text {
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* Snapshot grid */
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .snap-cell {
+    background: var(--surface);
+    padding: 16px;
+  }
+
+  .snap-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .snap-value {
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+
+  .snap-value.green { color: var(--accent3); }
+  .snap-value.orange { color: var(--accent2); }
+  .snap-value.yellow { color: var(--yellow); }
+
+  .snap-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  .section-title.green { color: var(--accent3); }
+  .section-title.orange { color: var(--accent2); }
+  .section-title.red { color: var(--red); }
+
+  /* Bullet lists */
+  .blist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .blist li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .blist li::before {
+    content: '→';
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .blist.green li::before { color: var(--accent3); content: '✓'; }
+  .blist.orange li::before { color: var(--accent2); content: '◆'; }
+  .blist.red li::before { color: var(--red); content: '⚑'; }
+  .blist.yellow li::before { color: var(--yellow); content: '★'; }
+
+  .blist li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* Sub-bullets */
+  .sub-blist {
+    list-style: none;
+    margin-top: 6px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sub-blist li {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .sub-blist li::before {
+    content: '–';
+    font-family: var(--mono);
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  /* Inline highlight */
+  .hl {
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    display: inline;
+  }
+
+  .hl.green {
+    background: rgba(57, 255, 138, 0.1);
+    color: var(--accent3);
+  }
+
+  .hl.orange {
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--accent2);
+  }
+
+  /* Two-column layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .col-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+  }
+
+  .col-block-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* Competitive table */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    font-family: var(--mono);
+  }
+
+  .comp-table th {
+    background: var(--surface2);
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-bright);
+  }
+
+  .comp-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+
+  .comp-table tr.himera-row td {
+    background: rgba(0, 212, 255, 0.04);
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .comp-table td.win { color: var(--accent3); }
+  .comp-table td.mid { color: var(--yellow); }
+  .comp-table td.lose { color: var(--red); }
+
+  /* Milestone timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 60px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-bright);
+  }
+
+  .tl-item {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .tl-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    width: 55px;
+    flex-shrink: 0;
+    padding-top: 10px;
+    text-align: right;
+    padding-right: 12px;
+  }
+
+  .tl-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 13px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tl-dot.green { background: var(--accent3); }
+
+  .tl-content {
+    padding: 8px 0 8px 14px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .tl-content strong {
+    color: var(--text-primary);
+    display: block;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 1px;
+  }
+
+  /* fit block */
+  .fit-block {
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    border-top: 2px solid var(--accent3);
+    padding: 20px;
+    margin-bottom: 36px;
+  }
+
+  .fit-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 14px;
+  }
+
+  /* Ask block */
+  .ask-block {
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    border-left: 3px solid var(--accent2);
+    padding: 20px 24px;
+    margin-top: 36px;
+  }
+
+  .ask-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .ask-amount {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+  .ask-details {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  /* Analyst notes block */
+  .notes-block {
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    border-left: 3px solid var(--yellow);
+    padding: 20px 24px;
+    margin-top: 36px;
+    margin-bottom: 36px;
+  }
+
+  .notes-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--yellow);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .notes-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+
+  /* Footer */
+  .doc-footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .confidential {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+  }
+
+  @media (max-width: 640px) {
+    .snapshot-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .doc-title { font-size: 28px; }
+    .comp-table { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-meta">
+      <span class="fund-tag">Investment Memo</span>
+      <span class="doc-date">{{ date }} // CONFIDENTIAL</span>
+    </div>
+    <div class="doc-title">{{ company_name }}</div>
+    <div class="doc-subtitle">{{ subtitle }}</div>
+  </div>
+
+  <!-- Verdict -->
+  <div class="verdict-bar">
+    <span class="verdict-label">Recommendation</span>
+    <span class="verdict-text">{{ recommendation }}</span>
+  </div>
+
+  <!-- Snapshot: 4 key metric cells, dynamically chosen based on available data.
+       Each cell uses: <div class="snap-cell">
+                         <div class="snap-label">LABEL</div>
+                         <div class="snap-value [green|orange|yellow]">VALUE</div>
+                         <div class="snap-sub">sub-text</div>
+                       </div>
+  -->
+  <div class="snapshot-grid">
+    {{ snapshot_cells }}
+  </div>
+
+  <!-- 01 — Company Overview -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Company Overview</span>
+    </div>
+    {{ section_01 }}
+  </div>
+
+  <!-- 02 — Market Opportunity -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Market Opportunity</span>
+    </div>
+    {{ section_02 }}
+  </div>
+
+  <!-- 03 — Traction & Validation
+       Content may include a <div class="timeline"> block if milestone data exists,
+       otherwise falls back to <ul class="blist green"> bullets.
+  -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title green">Traction &amp; Validation</span>
+    </div>
+    {{ section_03 }}
+  </div>
+
+  <!-- 04 — Competitive Position
+       Content should include a <table class="comp-table"> with the subject company
+       row marked class="himera-row", followed by <ul class="blist"> commentary.
+       Sourced from landscape.py similar_companies() output.
+  -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Competitive Position</span>
+    </div>
+    {{ section_04 }}
+  </div>
+
+  <!-- 05 — Team Assessment -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Team Assessment</span>
+    </div>
+    {{ section_05 }}
+  </div>
+
+  <!-- 06 — Technology & Product Deep Dive
+       Content may use <div class="two-col"> with <div class="col-block"> children
+       for spec sheets and ecosystem breakdowns.
+  -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">Technology &amp; Product Deep Dive</span>
+    </div>
+    {{ section_06 }}
+  </div>
+
+  <!-- 07 — Risks & Mitigants -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title red">Risks &amp; Mitigants</span>
+    </div>
+    {{ section_07 }}
+  </div>
+
+  <!-- 08 — Portfolio Fit & Strategic Rationale -->
+  <div class="fit-block">
+    <div class="fit-title">08 — Portfolio Fit &amp; Strategic Rationale</div>
+    {{ section_08 }}
+  </div>
+
+  <!-- 09 — Key Diligence Questions -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <span class="section-title orange">Key Diligence Questions</span>
+    </div>
+    {{ section_09 }}
+  </div>
+
+  <!-- 10 — Proposed Investment / Next Steps -->
+  <div class="ask-block">
+    <div class="ask-label">10 — Proposed Investment / Next Steps</div>
+    {{ section_10 }}
+  </div>
+
+  <!-- Analyst Notes (omit entire block if user_notes is empty) -->
+  {{ user_notes_section }}
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <span class="footer-tag">{{ footer }}</span>
+    <span class="confidential">Confidential — Not for Distribution</span>
+  </div>
+
+</div>
+</body>
+</html>

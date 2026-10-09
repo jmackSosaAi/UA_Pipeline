@@ -1,0 +1,93 @@
+# RSS feeds for the defense press collector.
+# Consumed by src/collectors/defense_press.py via load_rss_feeds().
+# Set active: false to disable a feed without removing its config.
+
+feeds:
+  # ── Ukraine focus ──────────────────────────────────────────────────────
+  - name: "Militarnyi"
+    url: "https://militarnyi.com/en/feed/"
+    category: ukraine
+    active: true
+
+  - name: "Ukrainska Pravda (EN)"
+    url: "https://www.pravda.com.ua/eng/rss/"
+    category: ukraine
+    active: true
+
+  # ── General defense news ──────────────────────────────────────────────
+  - name: "The War Zone"
+    url: "https://www.twz.com/feed"
+    category: general
+    active: true
+
+  - name: "Defense One"
+    url: "https://www.defenseone.com/rss/all/"
+    category: general
+    active: true
+
+  - name: "Breaking Defense"
+    url: "https://breakingdefense.com/feed/"
+    category: general
+    active: true
+
+  - name: "Defense News"
+    url: "https://www.defensenews.com/arc/outboundfeeds/rss/"
+    category: general
+    active: true
+
+  # ── C4ISR / signals ───────────────────────────────────────────────────
+  - name: "C4ISRNet"
+    url: "https://www.c4isrnet.com/arc/outboundfeeds/rss/"
+    category: c4isr
+    active: true
+
+  # ── Naval ─────────────────────────────────────────────────────────────
+  - name: "Naval News"
+    url: "https://www.navalnews.com/feed/"
+    category: naval
+    active: true
+
+  # ── Trade press ───────────────────────────────────────────────────────
+  - name: "Defense Daily"
+    url: "https://www.defensedaily.com/feed/"
+    category: trade
+    active: true
+
+  - name: "Aviation Week"
+    url: "https://aviationweek.com/rss.xml"
+    category: trade
+    active: true
+
+  - name: "Air & Space Forces Magazine"
+    url: "https://www.airandspaceforces.com/feed/"
+    category: trade
+    active: true
+
+  # ── Strategic / policy ────────────────────────────────────────────────
+  - name: "War on the Rocks"
+    url: "https://warontherocks.com/feed/"
+    category: policy
+    active: true
+
+  - name: "Atlantic Council"
+    url: "https://www.atlanticcouncil.org/feed/"
+    category: policy
+    active: true
+
+  - name: "Foreign Policy"
+    url: "https://foreignpolicy.com/feed/"
+    category: policy
+    active: true
+
+  - name: "The National Interest"
+    url: "https://nationalinterest.org/feed"
+    category: policy
+    active: true
+
+  # ── Disabled (broken upstream) ────────────────────────────────────────
+  # Janes Defence — feed at this URL has been returning malformed XML.
+  # Left in config (active: false) so we can flip it back if upstream fixes it.
+  - name: "Janes Defence"
+    url: "https://www.janes.com/feeds/news"
+    category: general
+    active: false

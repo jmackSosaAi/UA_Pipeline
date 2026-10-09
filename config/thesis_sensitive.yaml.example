@@ -1,0 +1,29 @@
+# Investment Thesis — SENSITIVE CONFIGURATION (example)
+# Copy this file to config/thesis_sensitive.yaml and fill in real values.
+# thesis_sensitive.yaml is gitignored and must never be committed.
+#
+# This file is merged on top of config/thesis.yaml at load time by src/thesis.py.
+# If thesis_sensitive.yaml is absent, the pipeline runs without fund-specific context.
+
+fund:
+  team:
+    - "[NAME] ([ROLE])"
+    - "[NAME] ([ROLE])"
+  check_size_min: 0
+  check_size_max: 0
+  total_deployed: 0
+  target_portfolio_size: 0
+  current_portfolio_size: 0
+  co_investors_notable:
+    - "[CO-INVESTOR]"
+  fund_investors_notable:
+    - "[LP NAME]"
+  brigade_relationships: []
+  testing_infrastructure: ""
+
+
+portfolio:
+  companies:
+    - name: "[PORTFOLIO COMPANY]"
+      category: "[CATEGORY]"
+      tags: ["[TAG]"]
