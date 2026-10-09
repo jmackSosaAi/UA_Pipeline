@@ -1,0 +1,98 @@
+# Curated article URLs for company extraction.
+# Consumed by src/ingest.py::scrape_articles() via load_article_seed_urls().
+# Add new URLs here — no code changes needed.
+#
+# Categories:
+#   accelerator_cohort   — published cohort lists (highest company density)
+#   ukraine_defense_tech — Ukrainian-focused news/index pages
+#   investment_coverage  — funding roundups and dealflow articles
+#   general              — encyclopaedic / catch-all sources
+
+articles:
+  # ── Brave1 ────────────────────────────────────────────────────────────
+  - url: "https://en.wikipedia.org/wiki/Brave1"
+    category: general
+    description: "Wikipedia overview of Brave1 — Ukraine's defense-tech accelerator."
+  - url: "https://thedefender.media/en/2025/12/brave1-investments-highlights-2025/"
+    category: accelerator_cohort
+    description: "Brave1 2025 investment highlights — names cohort companies."
+  - url: "https://ukrainesarmsmonitor.substack.com/p/brave1-market-ukraines-catalogue"
+    category: accelerator_cohort
+    description: "Brave1 Market — catalogue of Ukrainian defense-tech vendors."
+  - url: "https://ukrainesarmsmonitor.substack.com/p/brave1-the-engine-behind-ukraines"
+    category: accelerator_cohort
+    description: "Profile of Brave1 and the companies it supports."
+  - url: "https://www.kyivpost.com/post/65810"
+    category: accelerator_cohort
+    description: "Kyiv Post Brave1 coverage."
+  - url: "https://www.kyivpost.com/post/60491"
+    category: accelerator_cohort
+    description: "Kyiv Post Brave1 coverage."
+
+  # ── EUDIS Business Accelerator (EU) ───────────────────────────────────
+  - url: "https://defence-industry-space.ec.europa.eu/introducing-top-20-selected-companies-eudis-business-accelerator-2025-05-28_en"
+    category: accelerator_cohort
+    description: "EUDIS Business Accelerator — top 20 selected EU defense startups (Cohort 1)."
+  - url: "https://news.defcros.com/announcing-the-top-20-selected/"
+    category: accelerator_cohort
+    description: "DEFCROS announcement of EUDIS top 20 selections."
+
+  # ── NATO DIANA 2026 Cohort ────────────────────────────────────────────
+  - url: "https://spaceq.ca/nato-diana-selects-22-canadian-companies-for-2026-cohort/"
+    category: accelerator_cohort
+    description: "NATO DIANA 2026 — Canadian cohort companies."
+  - url: "https://www.gov.uk/government/news/the-uk-accelerator-welcomes-eight-companies-into-the-2026-nato-diana-programme"
+    category: accelerator_cohort
+    description: "NATO DIANA 2026 — UK accelerator companies."
+  - url: "https://betakit.com/twenty-canadian-companies-join-natos-largest-ever-defence-accelerator-cohort/"
+    category: accelerator_cohort
+    description: "BetaKit on Canadian companies joining NATO DIANA 2026."
+  - url: "https://www.dsei.co.uk/news/nato-diana-downselects-record-number-companies-2026"
+    category: accelerator_cohort
+    description: "DSEI on the record-size NATO DIANA 2026 cohort."
+
+  # ── Ukrainian defense-tech investment coverage ────────────────────────
+  - url: "https://united24media.com/business/why-global-investors-are-pouring-millions-into-ukraines-combat-tested-defense-tech-14276"
+    category: investment_coverage
+    description: "United24 — global investors backing Ukrainian defense-tech."
+  - url: "https://resiliencemedia.co/ukrainian-defence-tech-startups-raised/"
+    category: investment_coverage
+    description: "Resilience Media — funding rounds for Ukrainian defense-tech startups."
+  - url: "https://defensetechforukraine.org/investing/"
+    category: investment_coverage
+    description: "DefenseTech for Ukraine investing index."
+  - url: "https://ukrainesarmsmonitor.substack.com/p/arms-trends-in-ukraine-16-february"
+    category: ukraine_defense_tech
+    description: "Ukraine arms-trends bulletin (Feb)."
+  - url: "https://en.ain.ua/2025/12/24/major-investments-in-ukrainian-companies-in-2025/"
+    category: investment_coverage
+    description: "AIN — major Ukrainian investments in 2025."
+  - url: "https://en.ain.ua/2026/01/26/dealbook-of-ukraine-2026/"
+    category: investment_coverage
+    description: "AIN — Ukraine 2026 dealbook."
+  - url: "https://en.ain.ua/2025/03/04/growing-despite-everything-the-main-challenges-of-ukrainian-defense-tech-in-2025/"
+    category: ukraine_defense_tech
+    description: "AIN — challenges of Ukrainian defense-tech in 2025."
+  - url: "https://digitalstate.gov.ua/news/tech/10-ukrayinskykh-defence-tech-startapiv-u-hlobalnomu-top-100"
+    category: ukraine_defense_tech
+    description: "DigitalState — Ukrainian defense-tech startups in global top 100."
+  - url: "https://united24media.com/war-in-ukraine/ukraines-defense-tech-boom-129m-raised-in-2025-2x-growth-over-2024-15656"
+    category: investment_coverage
+    description: "United24 — Ukraine's defense-tech raised $129M in 2025."
+  - url: "https://cepa.org/article/investors-eye-ukraines-silicon-steppe/"
+    category: ukraine_defense_tech
+    description: "CEPA — investors eyeing Ukraine's 'Silicon Steppe'."
+
+  # ── Ukrainian-language index pages (Claude reads/translates natively) ─
+  - url: "https://en.ain.ua/tag/defense-tech/"
+    category: ukraine_defense_tech
+    description: "AIN defense-tech tag index."
+  - url: "https://mil.in.ua/en/news/"
+    category: ukraine_defense_tech
+    description: "Militarnyi news index."
+  - url: "https://en.defence-ua.com/news"
+    category: ukraine_defense_tech
+    description: "Defense Express news index."
+  - url: "https://speka.media/tag/defence-tech"
+    category: ukraine_defense_tech
+    description: "Speka defense-tech tag index."

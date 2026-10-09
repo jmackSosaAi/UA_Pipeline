@@ -1,0 +1,412 @@
+# Investment Thesis Configuration — PUBLIC
+# Safe to commit. Contains scoring weights, category taxonomy, sector interests,
+# geographic focus, and data sources. No personal, financial, or operational data.
+#
+# Sensitive fields (team, financials, LPs, brigade relationships, portfolio) live in
+# config/thesis_sensitive.yaml which is gitignored. See thesis_sensitive.yaml.example.
+#
+# All pipeline modules read from here via src/thesis.py, which merges both files.
+
+fund:
+  name: "Example Fund"
+  mission: "Back early-stage defense technology"
+  stage_preference:
+    - "pre-seed"
+    - "seed"
+  pre_product_ok: true
+
+  geographic_focus:
+    tier_1:
+      - "Ukraine"
+    tier_2:
+      - "Estonia"
+      - "Germany"
+      - "Denmark"
+      - "Poland"
+      - "UK"
+    tier_3:
+      - "France"
+      - "Netherlands"
+      - "other NATO allies"
+
+
+scoring:
+  # Weights must sum to 1.0.
+  # technical_founders is a Non-negotiable — weight reflects that (0.20 vs old 0.05).
+  # shipped_product is a signal, not a gate — pre-product OK per fund policy (0.10 vs old 0.25).
+  dimensions:
+    defense_relevance:
+      weight: 0.25
+      description: "Does the product explicitly solve a defense or military problem?"
+      scale:
+        0: "No defense application"
+        1: "Dual-use with weak defense case"
+        2: "Clear defense application, not yet validated"
+        3: "Combat-deployed or active military customer"
+
+    technical_founders:
+      weight: 0.20
+      description: "Non-negotiable: technical co-founders with domain expertise"
+      scale:
+        0: "No technical co-founders identifiable"
+        1: "Technical team but no co-founder level"
+        2: "At least one technical co-founder"
+        3: "Multiple technical co-founders with deep domain expertise"
+
+    post_war_durable:
+      weight: 0.15
+      description: "Will revenue exist if the active war phase ends?"
+      scale:
+        0: "Revenue entirely dependent on active conflict"
+        1: "Some peacetime application but not primary"
+        2: "Clear dual-use or NATO export path"
+        3: "Strong peacetime demand independent of any conflict"
+
+    nato_exportable:
+      weight: 0.15
+      description: "Is the company structured to sell into NATO markets?"
+      scale:
+        0: "Ukrainian entity with no export structure"
+        1: "Ukrainian entity with stated export ambitions"
+        2: "Dual entity or NATO-country subsidiary"
+        3: "Domiciled in NATO country with clean procurement path"
+
+    stage_fit:
+      weight: 0.15
+      description: "Is the company at the fund's sweet spot (pre-seed/seed, pre-product OK)?"
+      scale:
+        0: "Series B+ or 500+ employees — too late"
+        1: "Series A — borderline late for the fund"
+        2: "Seed with early product"
+        3: "Pre-seed or seed, small team, early stage — the fund's sweet spot"
+
+    shipped_product:
+      weight: 0.10
+      description: "Evidence of a real deployed product. The fund invests pre-product — this is a signal, not a gate."
+      scale:
+        0: "Concept only, no prototype"
+        1: "Prototype or demo exists"
+        2: "Product in field testing"
+        3: "Product combat-deployed or in active military use"
+
+
+stage_exclusions:
+  # Companies explicitly known to be too late-stage for the fund (Series B+, established primes,
+  # 100+ employees). Pipeline excludes them identically to portfolio companies.
+  # Add names here; exclusion applies on next run. No code changes needed.
+  companies:
+    - name: "Milrem Robotics"
+      reason: "Estonian UGV prime — well-funded (~€100M+), Series B+, too late-stage for a pre-seed/seed mandate"
+
+
+defense_categories:
+
+  tier_thresholds:
+    tier_1:
+      min_score: 2.5
+      label: "Strong Candidate"
+      description: "High thesis fit — score ≥2.5 AND at least one validated traction signal (combat deployed, named military customer, funding raised, or multi-source validation)"
+    tier_2:
+      min_score: 1.8
+      label: "Worth Watching"
+      description: "Relevant with at least one positive signal — score ≥1.8"
+    tier_3:
+      min_score: 1.0
+      label: "Early Signal"
+      description: "In a relevant space but limited data — score ≥1.0"
+    tier_4:
+      min_score: 0.0
+      label: "Insufficient Data"
+      description: "In database but not enough information to evaluate"
+
+  categories:
+    - name: "Unmanned Aerial Systems (UAS/UAV)"
+      short: "UAS/UAV"
+      description: "Fixed-wing, rotary, VTOL, and FPV drones for military and dual-use applications"
+      keywords:
+        - "drone"
+        - "UAV"
+        - "UAS"
+        - "FPV"
+        - "quadcopter"
+        - "fixed-wing"
+        - "VTOL"
+        - "aerial"
+        - "loitering munition"
+        - "kamikaze"
+        - "multirotor"
+
+    - name: "Unmanned Ground Systems (UGV/Robotics)"
+      short: "UGV/Robotics"
+      description: "Unmanned ground vehicles, robotic platforms, and autonomous weapons systems for land warfare"
+      keywords:
+        - "UGV"
+        - "ground robot"
+        - "robotic"
+        - "unmanned ground"
+        - "autonomous vehicle"
+        - "turret"
+        - "combat robot"
+        - "robotic turret"
+        - "zero line"
+        - "ground platform"
+
+    - name: "Unmanned Maritime (USV/UUV)"
+      short: "USV/UUV"
+      description: "Surface and underwater unmanned vessels for naval warfare and maritime surveillance"
+      keywords:
+        - "USV"
+        - "UUV"
+        - "naval drone"
+        - "surface vessel"
+        - "underwater vehicle"
+        - "maritime unmanned"
+        - "sea drone"
+        - "naval unmanned"
+        - "autonomous boat"
+
+    - name: "Counter-Drone / C-UAS"
+      short: "C-UAS"
+      description: "Systems to detect, track, and defeat hostile drones — kinetic, electronic, and directed energy"
+      keywords:
+        - "counter-drone"
+        - "C-UAS"
+        - "drone detection"
+        - "interceptor"
+        - "anti-drone"
+        - "drone defeat"
+        - "drone interception"
+        - "drone destruction"
+        - "counter-UAS"
+        - "drone jamming"
+
+    - name: "Electronic Warfare (EW/SIGINT)"
+      short: "EW/SIGINT"
+      description: "Jamming, spectrum dominance, signals intelligence, and electronic attack/protect systems"
+      keywords:
+        - "electronic warfare"
+        - "EW"
+        - "jamming"
+        - "SIGINT"
+        - "signals intelligence"
+        - "spectrum"
+        - "RF"
+        - "frequency"
+        - "COMINT"
+        - "ELINT"
+        - "SDR"
+        - "direction finding"
+        - "radio monitoring"
+        - "electronic attack"
+
+    - name: "Command, Control & Communications (C4)"
+      short: "C4/Comms"
+      description: "Tactical communications, battlefield networks, battle management, and situational awareness platforms"
+      keywords:
+        - "tactical radio"
+        - "mesh network"
+        - "communications"
+        - "C2"
+        - "C4ISR"
+        - "battle management"
+        - "command control"
+        - "situational awareness"
+        - "datalink"
+        - "battlefield network"
+        - "encrypted comms"
+        - "military communications"
+
+    - name: "ISR & Sensor Systems"
+      short: "ISR/Sensors"
+      description: "Intelligence, surveillance, and reconnaissance platforms plus sensing hardware — optical, thermal, acoustic, radar"
+      keywords:
+        - "reconnaissance"
+        - "surveillance"
+        - "sensor"
+        - "camera"
+        - "thermal"
+        - "LiDAR"
+        - "radar"
+        - "detection"
+        - "monitoring"
+        - "acoustic"
+        - "EO/IR"
+        - "imaging"
+        - "ISR"
+        - "targeting"
+        - "observation"
+
+    - name: "Autonomy & AI Software"
+      short: "Autonomy/AI"
+      description: "Software for autonomous decision-making, swarm coordination, GPS-denied navigation, and AI-driven mission execution"
+      keywords:
+        - "autonomous"
+        - "AI"
+        - "machine learning"
+        - "computer vision"
+        - "swarm"
+        - "navigation"
+        - "GPS-denied"
+        - "edge AI"
+        - "algorithm"
+        - "mission planning"
+        - "path planning"
+        - "autonomy software"
+        - "multi-UAV"
+        - "swarm coordination"
+
+    - name: "Demining & EOD"
+      short: "Demining/EOD"
+      description: "Mine detection, clearance, and explosive ordnance disposal — humanitarian and military"
+      keywords:
+        - "demining"
+        - "mine clearance"
+        - "explosive"
+        - "EOD"
+        - "humanitarian mine"
+        - "UXO"
+        - "mine detection"
+        - "clearance robot"
+
+    - name: "Cybersecurity & Information Warfare"
+      short: "Cyber/InfoOps"
+      description: "Offensive and defensive cyber capabilities, information operations, and secure communications"
+      keywords:
+        - "cyber"
+        - "information warfare"
+        - "encryption"
+        - "secure communications"
+        - "OPSEC"
+        - "cybersecurity"
+        - "information operations"
+        - "INFOSEC"
+
+    - name: "Space & Satellite"
+      short: "Space/SAT"
+      description: "Satellite systems, space-based ISR, SATCOM, and launch capabilities for defense applications"
+      keywords:
+        - "satellite"
+        - "space"
+        - "orbit"
+        - "constellation"
+        - "SATCOM"
+        - "imagery"
+        - "earth observation"
+        - "launch"
+
+    - name: "Logistics & Supply Chain"
+      short: "Logistics"
+      description: "Military logistics, ammunition supply, autonomous resupply, casualty evacuation"
+      keywords:
+        - "logistics"
+        - "supply chain"
+        - "ammunition supply"
+        - "medevac"
+        - "resupply"
+        - "transport"
+        - "cargo drone"
+        - "autonomous resupply"
+
+    - name: "Manufacturing & Components"
+      short: "Manufacturing"
+      description: "Defense-grade manufacturing, components, 3D printing, and materials supply for military systems"
+      keywords:
+        - "manufacturing"
+        - "components"
+        - "3D printing"
+        - "materials"
+        - "COTS"
+        - "supply"
+        - "fabrication"
+        - "additive manufacturing"
+        - "production"
+
+    - name: "Missiles & Strike Systems"
+      short: "Strike"
+      description: "Long-range precision strike, cruise missiles, guided munitions, and high-lethality platforms"
+      keywords:
+        - "missile"
+        - "cruise missile"
+        - "strike"
+        - "long-range"
+        - "precision strike"
+        - "guided munition"
+        - "ballistic"
+        - "warhead"
+        - "munition"
+
+
+sector_interests:
+  # Additive bonus applied to base score after dimension weighting. Capped at 3.0.
+  # Keywords are matched (substring) against lowercased product_types and technologies.
+  priority_sectors:
+    - name: "counter-drone / C-UAS"
+      modifier: 0.3
+      keywords:
+        - "counter-drone"
+        - "c-uas"
+        - "drone detection"
+        - "anti-drone"
+        - "drone interception"
+        - "drone destruction"
+      rationale: "Eveline stated this is a current augmentation area"
+
+    - name: "autonomous interception"
+      modifier: 0.3
+      keywords:
+        - "autonomous interception"
+        - "interceptor"
+        - "kinetic interception"
+        - "autonomous engagement"
+      rationale: "Identified as next major category by Eveline in Jan 2026 interview"
+
+    - name: "robotics at the zero line"
+      modifier: 0.25
+      keywords:
+        - "ground robot"
+        - "ugv"
+        - "unmanned ground"
+        - "zero line"
+        - "front line robot"
+        - "robotic turret"
+        - "combat robot"
+      rationale: "Identified as next major category by Eveline in Jan 2026 interview"
+
+    - name: "autonomy software"
+      modifier: 0.25
+      keywords:
+        - "autonomy software"
+        - "swarm"
+        - "multi-uav"
+        - "autonomous navigation"
+        - "mission planning"
+        - "swarm coordination"
+      rationale: "Identified as emerging category by Eveline in Jan 2026 interview"
+
+
+# Article seed URLs moved to config/sources/article_seed_urls.yaml
+# RSS feeds:        config/sources/rss_feeds.yaml
+# Excluded primes:  config/sources/excluded_companies.yaml
+
+procurement_filters:
+  # CPV code prefixes used to filter ProZorro tenders at the detail level.
+  # A tender passes if ANY of its items[].classification.id starts with one of these prefixes.
+  # All codes are from the Common Procurement Vocabulary (CPV) standard.
+  #
+  # HIGH-SIGNAL DEFENSE TECH (CPV 35 subtree — included):
+  cpv_prefixes:
+    - "357"   # Military electronic systems — C4ISR, EW, simulators, comms
+    - "356"   # Military aircraft, missiles, spacecraft — includes UAVs
+    - "355"   # Warships — includes unmanned underwater/surface vehicles
+    - "354"   # Military vehicles — includes UGVs, armored platforms
+    - "353"   # Weapons and ammunition — catches loitering munitions
+    - "3512"  # Surveillance and security systems — radar, sensors, detection
+    # NON-35 DEFENSE-ADJACENT:
+    - "322"   # Radio/communication/telecom equipment — battlefield comms, datalinks
+    - "384"   # Precision optical and measurement equipment — EO/IR, targeting optics
+  #
+  # EXCLUDED (noise within CPV 35):
+  #   3511 — firefighting equipment
+  #   3513 — safety/protective clothing
+  #   352  — police equipment (riot gear, handcuffs, sirens)
+  #   358  — individual support equipment (boots, uniforms)

@@ -1,0 +1,126 @@
+# Public mega-cap defense primes — too large for the fund's pre-seed / seed stage.
+# Consumed by src/collectors/defense_press.py via load_excluded_companies().
+# Names are matched case-insensitively against extracted company names.
+#
+# noise_description_patterns (below): substring fragments. If an extracted
+# entity's *description* contains one of these, it's filtered out before
+# promotion to canonical_companies / companies — even if the description
+# also mentions defense vocabulary. This catches media outlets, sponsors,
+# think tanks, and consulting firms that get incidentally extracted from
+# defense press articles.
+
+noise_description_patterns:
+  - "media outlet"
+  - "publisher"
+  - "news network"
+  - "news organization"
+  - "sponsor"            # also catches "sponsored"
+  - "sponsored by"
+  - "research firm"
+  - "consulting firm"
+
+excluded:
+  # ── US primes ────────────────────────────────────────────────────────
+  - name: "Lockheed Martin"
+    reason: "US prime — too late stage for the fund"
+  - name: "Boeing"
+    reason: "US prime — too late stage for the fund"
+  - name: "Raytheon"
+    reason: "US prime — too late stage for the fund"
+  - name: "RTX"
+    reason: "US prime (RTX Corporation) — too late stage for the fund"
+  - name: "Northrop Grumman"
+    reason: "US prime — too late stage for the fund"
+  - name: "General Dynamics"
+    reason: "US prime — too late stage for the fund"
+  - name: "L3Harris"
+    reason: "US prime — too late stage for the fund"
+  - name: "BAE Systems"
+    reason: "US/UK prime — too late stage for the fund"
+  - name: "Honeywell"
+    reason: "US prime — too late stage for the fund"
+  - name: "Huntington Ingalls"
+    reason: "US prime — too late stage for the fund"
+  - name: "Leidos"
+    reason: "US defense services prime — too late stage for the fund"
+  - name: "SAIC"
+    reason: "US defense services prime — too late stage for the fund"
+  - name: "CACI"
+    reason: "US defense services prime — too late stage for the fund"
+
+  # ── European primes ──────────────────────────────────────────────────
+  - name: "Airbus"
+    reason: "European prime — too late stage for the fund"
+  - name: "Thales"
+    reason: "European prime — too late stage for the fund"
+  - name: "Leonardo"
+    reason: "European prime — too late stage for the fund"
+  - name: "Rheinmetall"
+    reason: "European prime — too late stage for the fund"
+  - name: "Saab"
+    reason: "European prime — too late stage for the fund"
+  - name: "Kongsberg"
+    reason: "European prime — too late stage for the fund"
+  - name: "MBDA"
+    reason: "European prime — too late stage for the fund"
+  - name: "Naval Group"
+    reason: "European prime — too late stage for the fund"
+  - name: "Fincantieri"
+    reason: "European prime — too late stage for the fund"
+  - name: "Dassault"
+    reason: "European prime — too late stage for the fund"
+  - name: "KBR"
+    reason: "Defense services prime — too late stage for the fund"
+
+  # ── Aerospace giants ─────────────────────────────────────────────────
+  - name: "SpaceX"
+    reason: "Aerospace giant — too late stage for the fund"
+  - name: "Blue Origin"
+    reason: "Aerospace giant — too late stage for the fund"
+  - name: "Virgin Galactic"
+    reason: "Aerospace giant — too late stage for the fund"
+
+  # ── Major Israeli / Asian primes ─────────────────────────────────────
+  - name: "Elbit Systems"
+    reason: "Israeli prime — too late stage for the fund"
+  - name: "IAI"
+    reason: "Israel Aerospace Industries — too late stage for the fund"
+  - name: "Hyundai Rotem"
+    reason: "Asian prime — too late stage for the fund"
+  - name: "Mitsubishi Heavy"
+    reason: "Asian prime — too late stage for the fund"
+
+  # ── Tech mega-caps in defense space ──────────────────────────────────
+  - name: "Palantir"
+    reason: "Public tech mega-cap — too late stage for the fund"
+  - name: "Microsoft"
+    reason: "Public tech mega-cap — too late stage for the fund"
+  - name: "Google"
+    reason: "Public tech mega-cap — too late stage for the fund"
+  - name: "Amazon"
+    reason: "Public tech mega-cap — too late stage for the fund"
+  - name: "Meta"
+    reason: "Public tech mega-cap"
+  - name: "NVIDIA"
+    reason: "Public tech mega-cap"
+  - name: "IBM"
+    reason: "Public tech mega-cap"
+  - name: "Anthropic"
+    reason: "AI company — not the fund's stage/sector"
+  - name: "OpenAI"
+    reason: "AI company — not the fund's stage/sector"
+  - name: "Anduril"
+    reason: "$14B post-money — outside the fund's stage"
+
+  # ── Common abbreviations of entries above ────────────────────────────
+  # These are short tokens (≤4 chars) — only the exact-match path catches
+  # them. The startswith subsidiary check uses len(excluded) > 5 so they
+  # won't accidentally swallow unrelated names.
+  - name: "HII"
+    reason: "Huntington Ingalls abbreviation"
+  - name: "GD"
+    reason: "General Dynamics abbreviation"
+  - name: "NG"
+    reason: "Northrop Grumman abbreviation"
+  - name: "BAE"
+    reason: "BAE Systems abbreviation"

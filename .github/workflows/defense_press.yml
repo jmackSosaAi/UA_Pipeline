@@ -1,0 +1,54 @@
+# Defense Press daily collector workflow.
+#
+# STATUS: DORMANT — only `workflow_dispatch` (manual trigger) is enabled.
+#
+# To activate the daily schedule:
+#   1. Migrate persistent state away from the in-repo SQLite file
+#      (data/companies.db). GitHub Actions runners are ephemeral, so a
+#      schedule that mutates a local file does nothing useful. Options:
+#        - Postgres (Supabase, Neon, RDS) accessed via DATABASE_URL secret
+#        - S3-backed SQLite (litestream replication)
+#   2. Set the `ANTHROPIC_API_KEY` repository secret.
+#   3. Uncomment the `schedule:` trigger below and push to main.
+#
+# Manual trigger lets you smoke-test the pipeline from the Actions tab
+# even before persistent storage is wired up — the run will be a no-op
+# against a fresh DB but it exercises the full toolchain.
+
+name: Defense Press Collector
+
+on:
+  # schedule:
+  #   - cron: "0 7 * * *"   # daily at 07:00 UTC
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run collector
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: bash scripts/run_defense_press.sh
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: defense-press-logs
+          path: logs/
+          if-no-files-found: ignore

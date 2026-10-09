@@ -1,0 +1,10 @@
+requests==2.32.3          # HTTP calls — fetching web pages
+beautifulsoup4==4.12.3    # HTML parsing — extracting text from pages
+anthropic==0.40.0         # Official Anthropic SDK — Claude API calls
+python-dotenv==1.0.1      # Loads .env file into environment variables
+lxml==5.3.0               # Faster HTML parser used by BeautifulSoup under the hood
+pyyaml>=6.0               # Loads config/thesis.yaml into the pipeline
+aiohttp>=3.9              # Async HTTP — concurrent ProZorro detail fetches
+plotly>=5.0               # Interactive charts — conflict globe on HOME tab
+duckduckgo-search>=6.0    # Web search for collectors — no API key required
+feedparser>=6.0           # RSS/Atom parsing — defense press collector

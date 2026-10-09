@@ -1,0 +1,50 @@
+# SBIR/STTR award sources for the SBIR collector.
+# Consumed by src/collectors/sbir.py via load_sbir_config().
+#
+# Award counts shown reflect totals visible on SBIR.gov in late 2025/2026
+# (recorded for context — not used by the collector).
+#
+# Two-tier filter:
+#   core_agencies      → standard search_vocabulary keyword filter only
+#   dual_use_agencies  → standard vocab AND at least one dual_use_keyword
+#                        (skips pure civilian work — climate, residential
+#                         solar, NIH-style basic research)
+
+core_agencies:
+  - "Department of Defense"            # 14,364 — covers AF, Army, Navy, DARPA, MDA, SOCOM, etc.
+  - "Department of Homeland Security"  # 532 — counter-WMD, border, nuclear detection
+
+dual_use_agencies:
+  - "National Aeronautics and Space Administration"  # 3,715 — space defense
+  - "Department of Energy"                            # 3,513 — energy security, ARPA-E
+
+# Excluded entirely (high volume, low thesis relevance):
+#   HHS (12,374)  NSF (7,535)   USDA (1,937)  Commerce (928)
+#   EPA (736)     Education (652)   DOT (616)
+#   NRC (86)      Interior (15)     SBA
+
+dual_use_keywords:
+  - autonomous
+  - unmanned
+  - swarm
+  - hypersonic
+  - directed energy
+  - electronic warfare
+  - tactical
+  - surveillance
+  - sensor
+  - radar
+  - ISR
+  - command and control
+  - missile
+  - munition
+  - propulsion
+  - hardened
+  - radiation hardened
+  - secure communications
+  - GPS denied
+  - contested
+  - dual-use
+
+min_phase: I
+min_amount: 0
